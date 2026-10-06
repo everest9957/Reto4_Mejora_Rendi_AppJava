@@ -370,6 +370,7 @@ SELECT 'citas', COUNT(*) FROM medical_data.appointments
 UNION ALL
 SELECT 'doctores', COUNT(*) FROM medical_data.doctors;
 "
+```text
 📁 Estructura del repo
 text
 Reto4_Mejora_Rendi_AppJava/
@@ -387,6 +388,8 @@ Reto4_Mejora_Rendi_AppJava/
     ├── Patient.java
     ├── Doctor.java
     └── V3__add_indexes.sql
+
+```
 📄 Informe completo
 El informe completo con todo el detalle está en
 docs/PERFORMANCE_REPORT.md.
