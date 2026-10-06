@@ -101,7 +101,7 @@ private Patient patient;
 @JoinColumn(name = "doctor_id")
 private Doctor doctor;
 Con 30.000 citas, Hibernate hacía:
-
+```
 1 query para traer las citas
 
 N queries para cada paciente
@@ -145,7 +145,8 @@ Seq Scan on appointments
   Execution Time: 1.290 ms
 📸 EXPLAIN ANALYZE del baseline (todos Seq Scan):
 
-https://docs/capturas/01_fase_inicial_ANTES/08_explain_analyze_ANTES.png
+
+![Explain Analyze baseline](docs/capturas/01_fase_inicial_ANTES/08_explain_analyze_ANTES.png)
 
 5. Problemas identificados
 #	Problema	Impacto
@@ -199,11 +200,14 @@ Bitmap Index Scan on idx_appointments_doctor_id
   Execution Time: 0.443 ms      ← 3x más rápido (antes 1.290 ms)
 📸 EXPLAIN ANALYZE optimizado (con Index Scan):
 
-https://docs/capturas/02_optimizaciones/10a_explain_analyze_DESPUES_indices.png
+
+![EXPLAIN ANALYZE optimizado](docs/capturas/01_fase_inicial_ANTES/10a_explain_analyze_DESPUES_indices.png)
+
 
 📸 Comparativa antes vs después:
 
-https://docs/capturas/02_optimizaciones/10b_comparativa_ANTES_vs_DESPUES_indices.png
+
+![Comparativa](docs/capturas/02_optimizaciones/10b_comparativa_ANTES_vs_DESPUES_indices.png)
 
 Impacto
 Query	Antes	Después	Mejora
@@ -227,7 +231,8 @@ java
 List<Appointment> findAllWithDetails();
 📸 Código con JOIN FETCH:
 
-https://docs/capturas/02_optimizaciones/11_codigo_joinfetch.png
+
+![Código con JOIN FETCH](docs/capturas/02_optimizaciones/11_codigo_joinfetch.png)
 
 Complemento: @BatchSize + LAZY
 Además, cambiamos las relaciones de EAGER a LAZY y añadimos @BatchSize:
@@ -245,7 +250,8 @@ private List<Appointment> appointments = new ArrayList<>();
 private Specialty specialty;
 📸 Código con @BatchSize y @JsonIgnore:
 
-https://docs/capturas/02_optimizaciones/12_codigo_batchsize.png
+
+![Código con @BatchSize y @JsonIgnore](docs/capturas/02_optimizaciones/12_codigo_batchsize.png)
 
 Resultado: 5.101 queries → 1 query
 text
@@ -256,7 +262,7 @@ Session Metrics {
 }
 📸 Hibernate Statistics optimizado (1 sola query):
 
-https://docs/capturas/03_fase_final_DESPUES/13_hibernate_stats_DESPUES.png
+![Hibernate optimizado](docs/capturas/03_fase_final_DESPUES/13_hibernate_stats_DESPUES.png)
 
 Impacto
 Métrica	Antes	Después	Mejora
@@ -284,7 +290,8 @@ public ResponseEntity<Page<Appointment>> findAll(
 }
 📸 Código con paginación:
 
-https://docs/capturas/03_fase_final_DESPUES/15_codigo_paginacion.png
+
+![Código con paginación](docs/capturas/03_fase_final_DESPUES/15_codigo_paginacion.png)
 
 Resultado: 6.201 ms → 52 ms
 Escenario	Registros	Tiempo
@@ -293,11 +300,12 @@ Escenario	Registros	Tiempo
 /api/appointments/all (sin paginar)	30.000	3.075 ms
 📸 Endpoint paginado devolviendo 20 registros en 52 ms:
 
-https://docs/capturas/03_fase_final_DESPUES/16_endpoint_appointments_paginado_DESPUES.png
+
+![Endpoint paginado devolviendo](docs/capturas/03_fase_final_DESPUES/16_endpoint_appointments_paginado_DESPUES.png)
 
 📸 Endpoint /api/appointments optimizado:
 
-https://docs/capturas/03_fase_final_DESPUES/14_endpoint_appointments_DESPUES.png
+![Endpoint  optimizado](docs/capturas/03_fase_final_DESPUES/14_endpoint_appointments_DESPUES.png)
 
 📊 Resultados finales
 Comparativa completa
