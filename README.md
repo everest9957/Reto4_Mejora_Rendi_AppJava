@@ -56,7 +56,7 @@ text
 | Lombok | Latest | Reducción boilerplate |
 
 ---
-
+```
 ## 📁 Estructura del proyecto
 centro-medico-software/
 ├── backend/ # API REST Spring Boot
@@ -83,7 +83,7 @@ centro-medico-software/
 │ └── 03_fase_final_DESPUES/
 ├── docker-compose.yaml
 └── README.md
-
+```
 text
 
 ---
